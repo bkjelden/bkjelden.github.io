@@ -10,10 +10,16 @@
 					FB.init({
 						appId: '849378558411785'
 					});
+					FB.Event.subscribe('auth.authResponseChange', function(response){
+						console.log("auth.authResponseChange");
+						console.log(response);
+						
+					});
 				});
 				
 				$("#login").click(function(){
 					FB.login(function(response) {
+						console.log("login")
 						console.log(response);
 					});
 				});
