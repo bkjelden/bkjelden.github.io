@@ -13,7 +13,13 @@
 					FB.Event.subscribe('auth.authResponseChange', function(response){
 						console.log("auth.authResponseChange");
 						console.log(response);
-						
+						if(response.status == "connected"){
+							$("#login").hide()
+							FB.api("/me", function(response){
+								console.log("api")
+								console.log(response);	
+							});
+						}
 					});
 				});
 				
