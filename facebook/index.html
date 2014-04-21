@@ -42,12 +42,29 @@
 							numRequests++;
 							populateStatuses(resp[resp.length - 1].created_time);
 							$("#progress").text("Loaded "+statuses.length+" statuses using "+numRequests+" requests...");
+							mapData();
 						}else{
 							$("#progress").text("Loaded "+statuses.length+" statuses using "+numRequests+" requests... DONE!");
 						}
 						
 					});
 				};
+				
+				var mapData = function(){
+					var words = {};	
+					for(var i in statuses){
+						var statusWords = statuses[i].message.match(/[a-z]{4,}/gim/);
+						for(var j in statusWords){
+							var word = statusWords[j].toUpperCase();
+							if(words[word] === undefined){
+								words[word] = 1;	
+							}else{
+								words[word]++;
+							}
+						}
+					}
+					console.log(words);
+				}
 			});
 		</script>
 	</head>
