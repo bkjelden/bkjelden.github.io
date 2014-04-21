@@ -40,6 +40,6 @@ var WordCloud = WordCloud || (function(){
 	};
 	
 	return {
-		setStatuses: setStatuses;
+		setStatuses: setStatuses
 	}
 })();
