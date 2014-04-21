@@ -13,7 +13,7 @@ var WordCloud = WordCloud || (function(){
 		for(var i in statuses){
 			var passed = true;
 			for(var del in activeDelegates){
-				if(!activeDelegates[del](statuses[i]){ //delegate check failed
+				if(!activeDelegates[del](statuses[i])){ //delegate check failed
 					passed = false;
 					break;
 				}
