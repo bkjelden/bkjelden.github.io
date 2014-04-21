@@ -6,6 +6,8 @@
 		<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 		<script type="text/javascript">
 			$(document).ready(function(){
+				var statuses = [];
+				var numRequests = 0;
 				$.getScript('//connect.facebook.net/en_US/all.js', function(){
 					FB.init({
 						appId: '849378558411785'
@@ -14,11 +16,7 @@
 						console.log("auth.authResponseChange");
 						console.log(response);
 						if(response.status == "connected"){
-							$("#login").hide()
-							FB.api("/me", function(response){
-								console.log("api")
-								console.log(response);	
-							});
+							$("#login").hide();
 						}
 					});
 				});
@@ -27,8 +25,28 @@
 					FB.login(function(response) {
 						console.log("login")
 						console.log(response);
-					}, {scope: "user_status"});
+					}, {scope: "user_status,user_friends"});
 				});
+				
+				var populateStatuses = function(prevTime){
+					var query = '';
+					if(prevTime === undefined){
+						query = 'SELECT post_id, actor_id, created_time, permalink, message, action_links, like_info FROM stream WHERE source_id = me() LIMIT 50000'
+					}else{
+						query = 'SELECT post_id, actor_id, created_time, permalink, message, action_links, like_info FROM stream WHERE source_id = me() AND created_time < '+prevTime+'LIMIT 50000'
+					}
+					FB.api({ method: 'fql.query', query: query }, function(resp){
+						if(resp && resp.length > 0){
+							statuses = statuses.concat(resp);
+							numRequests++;
+							populateStatuses(resp[resp.length - 1].created_time);
+							$("#progress").text("Loaded "+statuses.length+" statuses using "+numRequests+" requests...");
+						}else{
+							$("#progress").text("Loaded "+statuses.length+" statuses using "+numRequests+" requests... DONE!");
+						}
+						
+					});
+				};
 			});
 		</script>
 	</head>
@@ -36,6 +54,7 @@
 		<div id="fb-root"></div>
 		<div class="container">
 			<button id="login">Login</button>
+			<div id="progress"></div>
 		</div>
 	</body>
 <html>
