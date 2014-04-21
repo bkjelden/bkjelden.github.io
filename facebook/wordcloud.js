@@ -35,7 +35,7 @@ var WordCloud = WordCloud || (function(){
 			wordCountsArray.push({ word: word, count: wordCounts[word] });
 		}
 		
-		wordCounts.sort(function(a,b){ return a.count - b.count; });
+		wordCountsArray.sort(function(a,b){ return a.count - b.count; });
 		console.log(wordCounts);
 	};
 	
