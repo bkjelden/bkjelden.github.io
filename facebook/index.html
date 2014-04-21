@@ -4,6 +4,7 @@
 		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 		<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 		<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+		<script src="/wordcloud.js">
 		<script type="text/javascript">
 			$(document).ready(function(){
 				var statuses = [];
@@ -45,28 +46,12 @@
 							
 						}else{
 							$("#progress").text("Loaded "+statuses.length+" statuses using "+numRequests+" requests... DONE!");
-							mapData();
+							//mapData();
+							WordCloud.setStatuses(statuses);
 						}
 						
 					});
 				};
-				
-				var mapData = function(){
-					var words = {};	
-					for(var i in statuses){
-						var statusWords = statuses[i].message.match(/[a-z]{4,}/gim);
-						for(var j in statusWords){
-							var word = statusWords[j].toUpperCase();
-							if(words[word] === undefined){
-								words[word] = 1;	
-							}else{
-								words[word]++;
-							}
-						}
-					}
-					console.log(words);
-					console.log(words.length);
-				}
 			});
 		</script>
 	</head>
