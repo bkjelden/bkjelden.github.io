@@ -53,7 +53,7 @@
 				var mapData = function(){
 					var words = {};	
 					for(var i in statuses){
-						var statusWords = statuses[i].message.match(/[a-z]{4,}/gim/);
+						var statusWords = statuses[i].message.match(/[a-z]{4,}/gim);
 						for(var j in statusWords){
 							var word = statusWords[j].toUpperCase();
 							if(words[word] === undefined){
