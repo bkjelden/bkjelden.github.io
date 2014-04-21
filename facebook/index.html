@@ -42,9 +42,10 @@
 							numRequests++;
 							populateStatuses(resp[resp.length - 1].created_time);
 							$("#progress").text("Loaded "+statuses.length+" statuses using "+numRequests+" requests...");
-							mapData();
+							
 						}else{
 							$("#progress").text("Loaded "+statuses.length+" statuses using "+numRequests+" requests... DONE!");
+							mapData();
 						}
 						
 					});
@@ -64,6 +65,7 @@
 						}
 					}
 					console.log(words);
+					console.log(words.length);
 				}
 			});
 		</script>
