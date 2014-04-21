@@ -32,9 +32,9 @@
 				var populateStatuses = function(prevTime){
 					var query = '';
 					if(prevTime === undefined){
-						query = 'SELECT post_id, actor_id, created_time, permalink, message, action_links, like_info FROM stream WHERE source_id = me() LIMIT 5000'
+						query = 'SELECT post_id, actor_id, created_time, permalink, message, action_links, like_info FROM stream WHERE source_id = me() AND strlen(message) > 0 LIMIT 5000'
 					}else{
-						query = 'SELECT post_id, actor_id, created_time, permalink, message, action_links, like_info FROM stream WHERE source_id = me() AND created_time < '+prevTime+'LIMIT 5000'
+						query = 'SELECT post_id, actor_id, created_time, permalink, message, action_links, like_info FROM stream WHERE source_id = me() AND created_time < '+prevTime+' AND strlen(message) > 0 LIMIT 5000'
 					}
 					FB.api({ method: 'fql.query', query: query }, function(resp){
 						if(resp && resp.length > 0){
