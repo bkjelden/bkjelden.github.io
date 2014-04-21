@@ -19,7 +19,7 @@ var WordCloud = WordCloud || (function(){
 				}
 			}
 			if(passed){
-				var statusWords = statuses[i].message.match(/[a-z]{4,}/gim);
+				var statusWords = statuses[i].message.match(/[a-z]{5,}/gim);
 				for(var j in statusWords){
 					var word = statusWords[j].toUpperCase();
 					if(wordCounts[word] === undefined){
@@ -35,8 +35,8 @@ var WordCloud = WordCloud || (function(){
 			wordCountsArray.push({ word: word, count: wordCounts[word] });
 		}
 		
-		wordCountsArray.sort(function(a,b){ return a.count - b.count; });
-		console.log(wordCountsArray);
+		wordCountsArray.sort(function(a,b){ return b.count - a.count; });
+		console.log(wordCountsArray.slice(0,100));
 	};
 	
 	return {
