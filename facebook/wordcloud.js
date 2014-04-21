@@ -1,4 +1,4 @@
-var WordCloud = WordCloud || (function(){}
+var WordCloud = WordCloud || (function(){
 	var statuses = [];
 	var activeDelegates = [];
 	var wordsInCloud = [];
@@ -42,4 +42,4 @@ var WordCloud = WordCloud || (function(){}
 	return {
 		setStatuses: setStatuses;
 	}
-)();
+})();
