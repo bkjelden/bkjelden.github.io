@@ -17,6 +17,7 @@
 						console.log(response);
 						if(response.status == "connected"){
 							$("#login").hide();
+							populateStatuses();
 						}
 					});
 				});
