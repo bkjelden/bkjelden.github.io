@@ -42,7 +42,7 @@ var WordCloud = WordCloud || (function(){
 	};
 	
 	var setupCloud = function(){
-		d3.layout.cloud().size([400,400]).words(wordsInCloud)
+		d3.layout.cloud().size([800,800]).words(wordsInCloud)
 			.rotate(function() { return ~~(Math.random() * 6) * 30; })
 			.fontSize(function(d) { return parseInt("" + (d.size*80 / maxWordCount)) + 20; })
 			.on("end", drawCloud).start();
@@ -50,7 +50,7 @@ var WordCloud = WordCloud || (function(){
 	
 	var drawCloud = function(words){
 		d3.select("#word-cloud").append("svg")
-			.attr("width", 400).attr("height", 400)
+			.attr("width", 800).attr("height", 800)
 			.append("g")
 			.attr("transform", "translate(150,150)")
 			.selectAll("text")
