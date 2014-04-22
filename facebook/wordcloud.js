@@ -2,6 +2,7 @@ var WordCloud = WordCloud || (function(){
 	var statuses = [];
 	var activeDelegates = [];
 	var wordsInCloud = [];
+	var maxWordCount = 0;
 	var fill = d3.scale.category20();
 	var setStatuses = function(_statuses){
 		statuses = _statuses;
@@ -37,12 +38,13 @@ var WordCloud = WordCloud || (function(){
 			wordCountsArray.push({ text: word, size: wordCounts[word] });
 		}
 		wordsInCloud = wordCountsArray.sort(function(a,b){ return b.size - a.size; });
+		maxWordCount = wordsInCloud[0].size;
 	};
 	
 	var setupCloud = function(){
 		d3.layout.cloud().size([400,400]).words(wordsInCloud)
-			.rotate(function() { return ~~(Math.random() * 2) * 90; })
-			.fontSize(function(d) { return parseInt("" + (d.size / 80)) + 20; })
+			.rotate(function() { return ~~(Math.random() * 6) * 30; })
+			.fontSize(function(d) { return parseInt("" + (d.size*80 / maxWordCount)) + 20; })
 			.on("end", drawCloud).start();
 	};
 	
