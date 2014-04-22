@@ -53,7 +53,7 @@ var WordCloud = WordCloud || (function(){
 		d3.select("#word-cloud").append("svg")
 			.attr("width", 1140).attr("height", 1140)
 			.append("g")
-			.attr("transform", "translate(150,150)")
+			//.attr("transform", "translate(150,150)")
 			.selectAll("text")
 			.data(words)
 			.enter().append("text")
