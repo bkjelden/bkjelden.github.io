@@ -37,21 +37,21 @@ var WordCloud = WordCloud || (function(){
 		for(var word in wordCounts){
 			wordCountsArray.push({ text: word, size: wordCounts[word] });
 		}
-		wordsInCloud = wordCountsArray.sort(function(a,b){ return b.size - a.size; });
+		wordsInCloud = wordCountsArray.sort(function(a,b){ return b.size - a.size; }).slice(0,50);
 		maxWordCount = wordsInCloud[0].size;
 	};
 	
 	var setupCloud = function(){
-		d3.layout.cloud().size([1140,900]).words(wordsInCloud)
+		d3.layout.cloud().size([1140,1140]).words(wordsInCloud)
 			.rotate(function() { return ~~(Math.random() * 12) * 15; })
-			.fontSize(function(d) { return parseInt("" + (d.size*d.size*100 / (maxWordCount*maxWordCount))) + 20; })
+			.fontSize(function(d) { return parseInt("" + (Math.sqrt(d.size)*80 / Math.sqrt(maxWordCount)) + 20; })
 			.font("Impact")
 			.on("end", drawCloud).start();
 	};
 	
 	var drawCloud = function(words){
 		d3.select("#word-cloud").append("svg")
-			.attr("width", 1140).attr("height", 900)
+			.attr("width", 1140).attr("height", 1140)
 			.append("g")
 			.attr("transform", "translate(150,150)")
 			.selectAll("text")
