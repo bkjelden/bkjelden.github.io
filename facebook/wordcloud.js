@@ -34,13 +34,13 @@ var WordCloud = WordCloud || (function(){
 		}
 		
 		for(var word in wordCounts){
-			wordCountsArray.push({ word: word, count: wordCounts[word] });
+			wordCountsArray.push({ text: word, size: wordCounts[word] });
 		}
-		wordsInCloud = wordCountsArray.sort(function(a,b){ return b.count - a.count; });
+		wordsInCloud = wordCountsArray.sort(function(a,b){ return b.size - a.size; });
 	};
 	
 	var setupCloud = function(){
-		d3.layout.cloud().size([400,400]).words(wordsInCloud).rotate(function() {  }).on("end", drawCloud).start();
+		d3.layout.cloud().size([400,400]).words(wordsInCloud).rotate(function() { return ~~(Math.random() * 2) * 90; }).on("end", drawCloud).start();
 	};
 	
 	var drawCloud = function(words){
