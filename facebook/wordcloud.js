@@ -40,7 +40,10 @@ var WordCloud = WordCloud || (function(){
 	};
 	
 	var setupCloud = function(){
-		d3.layout.cloud().size([400,400]).words(wordsInCloud).rotate(function() { return ~~(Math.random() * 2) * 90; }).on("end", drawCloud).start();
+		d3.layout.cloud().size([400,400]).words(wordsInCloud)
+			.rotate(function() { return ~~(Math.random() * 2) * 90; })
+			.fontSize(function(d) { return parseInt("" + (d.size / 80)) + 20; })
+			.on("end", drawCloud).start();
 	};
 	
 	var drawCloud = function(words){
