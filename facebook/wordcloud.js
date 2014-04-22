@@ -5,6 +5,7 @@ var WordCloud = WordCloud || (function(){
 	var setStatuses = function(_statuses){
 		statuses = _statuses;
 		updateCloud();
+		setupCloud();
 	};
 	
 	var updateCloud = function(){
@@ -34,9 +35,29 @@ var WordCloud = WordCloud || (function(){
 		for(var word in wordCounts){
 			wordCountsArray.push({ word: word, count: wordCounts[word] });
 		}
-		
-		wordCountsArray.sort(function(a,b){ return b.count - a.count; });
-		console.log(wordCountsArray.slice(0,100));
+		wordsInCloud = wordCountsArray.sort(function(a,b){ return b.count - a.count; });
+	};
+	
+	var setupCloud = function(){
+		d3.layout.cloud().size([400,400]).words(wordsInCloud).rotate(function() {  }).on("end", drawCloud).start();
+	};
+	
+	var drawCloud = function(words){
+		d3.select("#word-cloud").append("svg")
+			.attr("width", 400).attr("height", 400)
+			.append("g")
+			.attr("transform", "translate(150,150)")
+			.selectAll("text")
+			.data(words)
+			.enter().append("text")
+			.style("font-size", function(d) { return d.size + "px"; })
+			.style("font-family", "Impact")
+			.style("fill", function(d, i) { return fill(i); })
+			.attr("text-anchor", "middle")
+			.attr("transform", function(d) {
+				return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+			})
+			.text(function(d) { return d.text; });
 	};
 	
 	return {

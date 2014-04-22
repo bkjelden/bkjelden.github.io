@@ -4,6 +4,8 @@
 		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 		<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 		<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+		<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+		<script src="http://rawgit.com/jasondavies/d3-cloud/master/d3.layout.cloud.js"></script>
 		<script src="wordcloud.js"></script>
 		<script type="text/javascript">
 			$(document).ready(function(){
@@ -46,7 +48,6 @@
 							
 						}else{
 							$("#progress").text("Loaded "+statuses.length+" statuses using "+numRequests+" requests... DONE!");
-							//mapData();
 							WordCloud.setStatuses(statuses);
 						}
 						
@@ -60,6 +61,7 @@
 		<div class="container">
 			<button id="login">Login</button>
 			<div id="progress"></div>
+			<div id="word-cloud"></div>
 		</div>
 	</body>
 <html>
