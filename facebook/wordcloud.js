@@ -42,7 +42,7 @@ var WordCloud = WordCloud || (function(){
 	};
 	
 	var setupCloud = function(){
-		d3.layout.cloud().size([1140,1140]).words(wordsInCloud)
+		d3.layout.cloud().size([1140,900]).words(wordsInCloud)
 			.rotate(function() { return ~~(Math.random() * 12) * 15; })
 			.fontSize(function(d) { return parseInt("" + (Math.sqrt(d.size)*80) / Math.sqrt(maxWordCount)) + 20; })
 			.font("Impact")
@@ -51,9 +51,9 @@ var WordCloud = WordCloud || (function(){
 	
 	var drawCloud = function(words){
 		d3.select("#word-cloud").append("svg")
-			.attr("width", 1140).attr("height", 1140)
+			.attr("width", 1140).attr("height", 900)
 			.append("g")
-			//.attr("transform", "translate(150,150)")
+			.attr("transform", "translate(570,450)")
 			.selectAll("text")
 			.data(words)
 			.enter().append("text")
