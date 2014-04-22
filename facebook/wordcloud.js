@@ -2,6 +2,7 @@ var WordCloud = WordCloud || (function(){
 	var statuses = [];
 	var activeDelegates = [];
 	var wordsInCloud = [];
+	var fill = d3.scale.category20();
 	var setStatuses = function(_statuses){
 		statuses = _statuses;
 		updateCloud();
