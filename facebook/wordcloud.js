@@ -42,15 +42,16 @@ var WordCloud = WordCloud || (function(){
 	};
 	
 	var setupCloud = function(){
-		d3.layout.cloud().size([800,800]).words(wordsInCloud)
-			.rotate(function() { return ~~(Math.random() * 6) * 30; })
-			.fontSize(function(d) { return parseInt("" + (d.size*80 / maxWordCount)) + 20; })
+		d3.layout.cloud().size([1140,900]).words(wordsInCloud)
+			.rotate(function() { return ~~(Math.random() * 12) * 15; })
+			.fontSize(function(d) { return parseInt("" + (d.size*d.size*100 / (maxWordCount*maxWordCount))) + 20; })
+			.font("Impact")
 			.on("end", drawCloud).start();
 	};
 	
 	var drawCloud = function(words){
 		d3.select("#word-cloud").append("svg")
-			.attr("width", 800).attr("height", 800)
+			.attr("width", 1140).attr("height", 900)
 			.append("g")
 			.attr("transform", "translate(150,150)")
 			.selectAll("text")
