@@ -37,13 +37,13 @@ var WordCloud = WordCloud || (function(){
 		for(var word in wordCounts){
 			wordCountsArray.push({ text: word, size: wordCounts[word] });
 		}
-		wordsInCloud = wordCountsArray.sort(function(a,b){ return b.size - a.size; }).slice(0,50);
+		wordsInCloud = wordCountsArray.sort(function(a,b){ return b.size - a.size; }).slice(0,250);
 		maxWordCount = wordsInCloud[0].size;
 	};
 	
 	var setupCloud = function(){
 		d3.layout.cloud().size([1140,900]).words(wordsInCloud)
-			.rotate(function() { return ~~(Math.random() * 12) * 15; })
+			.rotate(function() { return (~~(Math.random() * 12) * 15) - 90; })
 			.fontSize(function(d) { return parseInt("" + (Math.sqrt(d.size)*80) / Math.sqrt(maxWordCount)) + 20; })
 			.font("Impact")
 			.on("end", drawCloud).start();
