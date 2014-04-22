@@ -44,7 +44,7 @@ var WordCloud = WordCloud || (function(){
 	var setupCloud = function(){
 		d3.layout.cloud().size([1140,1140]).words(wordsInCloud)
 			.rotate(function() { return ~~(Math.random() * 12) * 15; })
-			.fontSize(function(d) { return parseInt("" + (Math.sqrt(d.size)*80 / Math.sqrt(maxWordCount)) + 20; })
+			.fontSize(function(d) { return parseInt("" + (Math.sqrt(d.size)*80) / Math.sqrt(maxWordCount)) + 20; })
 			.font("Impact")
 			.on("end", drawCloud).start();
 	};
