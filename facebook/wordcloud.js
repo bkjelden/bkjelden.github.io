@@ -50,7 +50,8 @@ var WordCloud = WordCloud || (function(){
 	};
 	
 	var drawCloud = function(words){
-		d3.select("#word-cloud").append("svg")
+		$("#content-container").empty();
+		d3.select("#content-container").append("svg")
 			.attr("width", 1140).attr("height", 900)
 			.append("g")
 			.attr("transform", "translate(570,450)")

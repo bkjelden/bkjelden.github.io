@@ -50,7 +50,6 @@
 					FB.api({ method: 'fql.query', query: query }, function(resp){
 						if(resp && resp.length > 0){
 							statuses = statuses.concat(resp);
-							numRequests++;
 							populateStatuses(resp[resp.length - 1].created_time);
 							if($("#progress-div").length == 0){
 								$("#content-container").append('<div id="progress-div"><span id="progress"></span></div>');
