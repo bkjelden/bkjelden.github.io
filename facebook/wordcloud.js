@@ -67,12 +67,19 @@ var WordCloud = WordCloud || (function(){
 			})
 			.text(function(d) { return d.text; });
 		$("#word-cloud-form").css("visibility", "visible");
+		var beforeTime = $("#before-time").data("DateTimePicker");
+		beforeTime.setMinDate(new Date((statuses[0].created_time + 1)*1000));
+		beforeTime.setDate(new Date(statuses[0].created_time*1000));
+		var endTime = $("#after-time").data("DateTimePicker");
+		endTime.setMinDate(new Date((statuses[statuses.length - 1].created_time - 1)*1000));
+		endTime.setDate(new Date(statuses[statuses.length - 1].created_time*1000));
 	};
 	
 	$("#filter").click(function(){
 		
 	});
-	
+	$("#before-time").datetimepicker();
+	$("#after-time").datetimepicker();
 	return {
 		setStatuses: setStatuses
 	}
