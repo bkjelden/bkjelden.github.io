@@ -29,7 +29,7 @@
 						console.log(response);
 						if(!initialized && response.status == "connected"){
 							initialized = true;
-							//$("#login").hide();
+							$("#login-div").remove();
 							populateStatuses();
 						}
 					});
@@ -69,7 +69,7 @@
 		<div id="fb-root"></div>
 		<div class="container">
 			<div class="row">
-				<div id="word-cloud-form" class="form-group">
+				<div id="word-cloud-form" class="form-group" style="visibility: none">
 					<div class="col-sm-4">
 						<div class="input-group date" id="before-time">
 							<span class="input-group-addon">Before:</span>
