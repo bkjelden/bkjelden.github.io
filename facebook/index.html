@@ -24,7 +24,7 @@
 						console.log(response);
 						if(!initialized && response.status == "connected"){
 							initialized = true;
-							$("#login").hide();
+							//$("#login").hide();
 							populateStatuses();
 						}
 					});
@@ -97,7 +97,9 @@
 				</div>
 			</div>
 			<div id="content-container" style="height: 900px" class="col-md-12">
-						<button id="login" class="btn btn-lg text-center" style="vertical-align: middle">Login</button>
+					<div id="login-div" class="center-block">
+						<button id="login" class="btn btn-lg">Login</button>
+					</div>
 			</div>
 		</div>
 	</body>
