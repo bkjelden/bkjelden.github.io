@@ -32,7 +32,6 @@
 				
 				$("#login").click(function(){
 					FB.login(function(response) {
-						console.log("login")
 						console.log(response);
 					}, {scope: "public_profile,basic_info,user_status,user_friends,read_stream,export_stream"});
 				});
@@ -49,10 +48,10 @@
 							statuses = statuses.concat(resp);
 							numRequests++;
 							populateStatuses(resp[resp.length - 1].created_time);
+							
 							$("#progress").text("Loaded "+statuses.length+" statuses using "+numRequests+" requests...");
 							
 						}else{
-							$("#progress").text("Loaded "+statuses.length+" statuses using "+numRequests+" requests... DONE!");
 							WordCloud.setStatuses(statuses);
 						}
 						
@@ -96,10 +95,8 @@
 					</div>
 				</div>
 			</div>
-			<div id="content-container" style="height: 900px" class="col-md-12">
-					<div id="login-div" class="center-block">
-						<button id="login" class="btn btn-lg">Login</button>
-					</div>
+			<div id="content-container" style="height: 900px text-align: center" class="col-md-12">
+				<button id="login" class="btn btn-lg">Login with Facebook</button>
 			</div>
 		</div>
 	</body>
