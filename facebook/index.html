@@ -18,7 +18,6 @@
 		<script type="text/javascript">
 			$(document).ready(function(){
 				var statuses = [];
-				var numRequests = 0;
 				var initialized = false;
 				$.getScript('//connect.facebook.net/en_US/all.js', function(){
 					FB.init({
@@ -53,8 +52,10 @@
 							statuses = statuses.concat(resp);
 							numRequests++;
 							populateStatuses(resp[resp.length - 1].created_time);
-							
-							$("#progress").text("Loaded "+statuses.length+" statuses using "+numRequests+" requests...");
+							if($("#progress-div").length == 0){
+								$("#content-container").append('<div id="progress-div"><span id="progress"></span></div>');
+							}
+							$("#progress").text("Loaded "+statuses.length+" statuses");
 							
 						}else{
 							WordCloud.setStatuses(statuses);
@@ -69,7 +70,7 @@
 		<div id="fb-root"></div>
 		<div class="container">
 			<div class="row">
-				<div id="word-cloud-form" class="form-group" style="visibility: none">
+				<div id="word-cloud-form" class="form-group" style="visibility: hidden">
 					<div class="col-sm-4">
 						<div class="input-group date" id="before-time">
 							<span class="input-group-addon">Before:</span>
