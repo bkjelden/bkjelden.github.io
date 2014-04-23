@@ -28,9 +28,9 @@ var WordCloud = WordCloud || (function(){
 		});
 		$("#before-time").datetimepicker();
 		$("#after-time").datetimepicker();
-		$("#posted-by").append("<option>", { value: "-1" }).text("Everyone");
+		$("#posted-by").append($("<option>", { value: "-1" }).text("Everyone"));
 		for(var i in _names){
-			$("#posted-by").append("<option>", { value: _names[i].uid }).text(_names[i].name);	
+			$("#posted-by").append($("<option>", { value: _names[i].uid }).text(_names[i].name));	
 		}
 		$("#word-cloud-form").css("visibility", "visible");
 		
