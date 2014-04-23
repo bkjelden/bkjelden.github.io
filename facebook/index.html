@@ -18,6 +18,7 @@
 		<script type="text/javascript">
 			$(document).ready(function(){
 				var statuses = [];
+				var names = [];
 				var initialized = false;
 				$.getScript('//connect.facebook.net/en_US/all.js', function(){
 					FB.init({
@@ -57,11 +58,25 @@
 							$("#progress").text("Loaded "+statuses.length+" statuses");
 							
 						}else{
-							WordCloud.initialize(statuses);
+							populateNames();
 						}
 						
 					});
 				};
+				
+				var populateNames = function(){
+					var user_ids = [];
+					for(var i in statuses){
+						if($.inArray(statuses[i].actor_id, user_ids) == -1){
+							user_ids.push(statuses[i].actor_id);
+						}
+					}
+					var query = "SELECT name, uid FROM user WHERE uid IN ("+user_ids.join()+")";
+					FB.api({ method: 'fql.query', query: query }, function(resp){
+						names = resp;
+						WordCloud.initialize(statuses);
+					});
+				}
 			});
 		</script>
 	</head>

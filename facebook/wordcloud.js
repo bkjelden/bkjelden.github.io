@@ -60,7 +60,10 @@ var WordCloud = WordCloud || (function(){
 		for(var word in wordCounts){
 			wordCountsArray.push({ text: word, size: wordCounts[word] });
 		}
-		wordsInCloud = wordCountsArray.sort(function(a,b){ return b.size - a.size; }).slice(0,250);
+		wordsInCloud = wordCountsArray.sort(function(a,b){ return b.size - a.size; });
+		if(wordsInCloud.length > 250){ //it's not likely the word cloud will even be able to fit 250 words on the screen, but if its larger than this, cut it down to speed rendering up
+		wordsInCloud = wordsInCloud.slice(0,250);
+		}
 		maxWordCount = wordsInCloud[0].size;
 	};
 	
