@@ -1,7 +1,9 @@
+<!DOCTYPE html>
 <html>
 	<head>
-		<title>Hello, world!</title>
+		<title>Facebook Timeline Word Cloud</title>
 		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+		<!--rawgit lets us link to libraries on github, which works great for a simple project like this-->
 		<link rel="stylesheet" href="http://rawgit.com/Eonasdan/bootstrap-datetimepicker/master/build/css/bootstrap-datetimepicker.min.css">
 		<style type="text/css">
 			#login-div, #progress-div{
@@ -13,20 +15,18 @@
 		<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 		<script src="http://rawgit.com/jasondavies/d3-cloud/master/d3.layout.cloud.js"></script>
 		<script src="http://momentjs.com/downloads/moment.min.js"></script>
+		<!--linking to a specific commit because the latest in master has a bug in it-->
 		<script src="http://rawgit.com/Eonasdan/bootstrap-datetimepicker/0c4ba0fe70d4f351c0e0d1f642cc2e825758d4e6/src/js/bootstrap-datetimepicker.js"></script>
 		<script src="wordcloud.js"></script>
 		<script type="text/javascript">
 			$(document).ready(function(){
 				var statuses = [];
-				var names = [];
 				var initialized = false;
 				$.getScript('//connect.facebook.net/en_US/all.js', function(){
 					FB.init({
 						appId: '849378558411785'
 					});
 					FB.Event.subscribe('auth.authResponseChange', function(response){
-						console.log("auth.authResponseChange");
-						console.log(response);
 						if(!initialized && response.status == "connected"){
 							initialized = true;
 							$("#login-div").remove();
@@ -44,9 +44,10 @@
 				var populateStatuses = function(prevTime){
 					var query = '';
 					if(prevTime === undefined){
-						query = 'SELECT post_id, actor_id, created_time, permalink, message, action_links, like_info FROM stream WHERE source_id = me() AND strlen(message) > 0 LIMIT 5000'
+						//these queries don't return 5000 results, but 5000 seems to be the LIMIT at which the result set stops growing
+						query = 'SELECT post_id, actor_id, created_time, permalink, message, action_links, like_info FROM stream WHERE source_id = me() AND strlen(message) > 0 LIMIT 5000';
 					}else{
-						query = 'SELECT post_id, actor_id, created_time, permalink, message, action_links, like_info FROM stream WHERE source_id = me() AND created_time < '+prevTime+' AND strlen(message) > 0 LIMIT 5000'
+						query = 'SELECT post_id, actor_id, created_time, permalink, message, action_links, like_info FROM stream WHERE source_id = me() AND created_time < '+prevTime+' AND strlen(message) > 0 LIMIT 5000';
 					}
 					FB.api({ method: 'fql.query', query: query }, function(resp){
 						if(resp && resp.length > 0){
@@ -65,7 +66,7 @@
 				};
 				
 				var populateNames = function(){
-					$("#progress").text("Loaded names");
+					$("#progress").text("Loading names");
 					var user_ids = [];
 					for(var i in statuses){
 						if($.inArray(statuses[i].actor_id, user_ids) == -1){
@@ -74,7 +75,7 @@
 					}
 					var query = "SELECT name, uid FROM user WHERE uid IN ("+user_ids.join()+")";
 					FB.api({ method: 'fql.query', query: query }, function(resp){
-						names = resp.sort(function(a,b){ return a.name.localeCompare(b.name); });;
+						var names = resp.sort(function(a,b){ return a.name.localeCompare(b.name); });;
 						WordCloud.initialize(statuses, names);
 					});
 				}
@@ -84,7 +85,7 @@
 	<body>
 		<div id="fb-root"></div>
 		<div class="container">
-			<h1 class="text-center">Facebook Word Cloud</h1>
+			<h1 class="text-center">Facebook Timeline Word Cloud</h1>
 			<div class="row">
 				<div id="word-cloud-form" class="form-group" style="visibility: hidden">
 					<div class="col-sm-4">

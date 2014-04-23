@@ -1,9 +1,6 @@
 var WordCloud = WordCloud || (function(){
 	var statuses = [];
 	var activeDelegates = {};
-	var wordsInCloud = [];
-	var maxWordCount = 0;
-	var fill = d3.scale.category20();
 	
 	var initialize = function(_statuses, _names){
 		statuses = _statuses;
@@ -48,7 +45,6 @@ var WordCloud = WordCloud || (function(){
 	
 	var updateCloud = function(){
 		var wordCounts = {};
-		var wordCountsArray = [];
 		for(var i in statuses){
 			var passed = true;
 			for(var del in activeDelegates){
@@ -70,17 +66,18 @@ var WordCloud = WordCloud || (function(){
 			}
 		}
 		
+		var wordCountsArray = [];
 		for(var word in wordCounts){
 			wordCountsArray.push({ text: word, size: wordCounts[word] });
 		}
-		wordsInCloud = wordCountsArray.sort(function(a,b){ return b.size - a.size; });
-		if(wordsInCloud.length > 250){ //it's not likely the word cloud will even be able to fit 250 words on the screen, but if the list is larger than this, cut it down to speed rendering up
-		wordsInCloud = wordsInCloud.slice(0,250);
+		wordCountsArray = wordCountsArray.sort(function(a,b){ return b.size - a.size; });
+		if(wordCountsArray.length > 250){ //it's not likely the word cloud will even be able to fit 250 words on the screen, but if the list is larger than this, cut it down to speed rendering up
+			wordCountsArray = wordCountsArray.slice(0,250);
 		}
 		
-		if(wordsInCloud.length > 0){
-			maxWordCount = wordsInCloud[0].size;
-			d3.layout.cloud().size([1140,900]).words(wordsInCloud)
+		if(wordCountsArray.length > 0){
+			var maxWordCount = wordCountsArray[0].size;
+			d3.layout.cloud().size([1140,900]).words(wordCountsArray)
 				.rotate(function() { return (~~(Math.random() * 12) * 15) - 90; }) //-90 degrees to 90 degrees in 15 degree steps
 				.fontSize(function(d) { return parseInt("" + (Math.sqrt(d.size)*100) / Math.sqrt(maxWordCount)) + 10; }) //sqrt should give us a wider distribution of font sizes
 				.font("Impact")
@@ -102,7 +99,7 @@ var WordCloud = WordCloud || (function(){
 			.enter().append("text")
 			.style("font-size", function(d) { return d.size + "px"; })
 			.style("font-family", "Impact")
-			.style("fill", function(d, i) { return fill(i); })
+			.style("fill", function(d, i) { return d3.scale.category20()(i); })
 			.attr("text-anchor", "middle")
 			.attr("transform", function(d) {
 				return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
