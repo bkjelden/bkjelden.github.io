@@ -24,7 +24,6 @@ var WordCloud = WordCloud || (function(){
 				activeDelegates.postedBy = function(){ return true; };
 			}
 			updateCloud();
-			setupCloud();
 		});
 		$("#before-time").datetimepicker();
 		$("#after-time").datetimepicker();
@@ -42,7 +41,6 @@ var WordCloud = WordCloud || (function(){
 		endTime.setDate(new Date(parseInt(statuses[statuses.length - 1].created_time)*1000));
 		
 		updateCloud();
-		setupCloud();
 	};
 	
 	var updateCloud = function(){
@@ -76,18 +74,14 @@ var WordCloud = WordCloud || (function(){
 		if(wordsInCloud.length > 250){ //it's not likely the word cloud will even be able to fit 250 words on the screen, but if its larger than this, cut it down to speed rendering up
 		wordsInCloud = wordsInCloud.slice(0,250);
 		}
+		
 		if(wordsInCloud.length > 0){
 			maxWordCount = wordsInCloud[0].size;
-		}
-	};
-	
-	var setupCloud = function(){
-		if(wordsInCloud.length > 0){
-		d3.layout.cloud().size([1140,900]).words(wordsInCloud)
-			.rotate(function() { return (~~(Math.random() * 12) * 15) - 90; })
-			.fontSize(function(d) { return parseInt("" + (Math.sqrt(d.size)*80) / Math.sqrt(maxWordCount)) + 20; })
-			.font("Impact")
-			.on("end", drawCloud).start();
+			d3.layout.cloud().size([1170,900]).words(wordsInCloud)
+				.rotate(function() { return (~~(Math.random() * 12) * 15) - 90; })
+				.fontSize(function(d) { return parseInt("" + (Math.sqrt(d.size)*100) / Math.sqrt(maxWordCount)) + 10; })
+				.font("Impact")
+				.on("end", drawCloud).start();
 		}else{
 			$("#content-container").empty();
 			$("#content-container").append('<h1 class="text-center">No words longer than 5 characters found, try again!</h1>');
@@ -97,9 +91,9 @@ var WordCloud = WordCloud || (function(){
 	var drawCloud = function(words){
 		$("#content-container").empty();
 		d3.select("#content-container").append("svg")
-			.attr("width", 1140).attr("height", 900)
+			.attr("width", 1170).attr("height", 900)
 			.append("g")
-			.attr("transform", "translate(570,450)")
+			.attr("transform", "translate(585,450)")
 			.selectAll("text")
 			.data(words)
 			.enter().append("text")

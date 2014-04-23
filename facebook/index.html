@@ -55,7 +55,7 @@
 							if($("#progress-div").length == 0){
 								$("#content-container").append('<div id="progress-div"><span id="progress"></span></div>');
 							}
-							$("#progress").text("Loaded "+statuses.length+" statuses");
+							$("#progress").text("Loaded "+statuses.length+" statuses (this may take a while to complete)");
 							
 						}else{
 							populateNames();
@@ -65,6 +65,7 @@
 				};
 				
 				var populateNames = function(){
+					$("#progress").text("Loaded names");
 					var user_ids = [];
 					for(var i in statuses){
 						if($.inArray(statuses[i].actor_id, user_ids) == -1){
