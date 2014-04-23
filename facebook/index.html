@@ -2,15 +2,19 @@
 	<head>
 		<title>Hello, world!</title>
 		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+		<link rel="stylesheet" href="http://rawgit.com/Eonasdan/bootstrap-datetimepicker/master/build/css/bootstrap-datetimepicker.min.css">
 		<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 		<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 		<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 		<script src="http://rawgit.com/jasondavies/d3-cloud/master/d3.layout.cloud.js"></script>
+		<script src="http://momentjs.com/downloads/moment.min.js"></script>
+		<script src="http://rawgit.com/Eonasdan/bootstrap-datetimepicker/blob/master/build/js/bootstrap-datetimepicker.min.js"></script>
 		<script src="wordcloud.js"></script>
 		<script type="text/javascript">
 			$(document).ready(function(){
 				var statuses = [];
 				var numRequests = 0;
+				var initialized = false;
 				$.getScript('//connect.facebook.net/en_US/all.js', function(){
 					FB.init({
 						appId: '849378558411785'
@@ -18,7 +22,8 @@
 					FB.Event.subscribe('auth.authResponseChange', function(response){
 						console.log("auth.authResponseChange");
 						console.log(response);
-						if(response.status == "connected"){
+						if(!initialized && response.status == "connected"){
+							initialized = true;
 							$("#login").hide();
 							populateStatuses();
 						}
@@ -61,6 +66,16 @@
 		<div class="container">
 			<button id="login">Login</button>
 			<div id="progress"></div>
+			<div class="row">
+				<div id="word-cloud-form" class="form-group">
+					<div class="col-sm-6">
+						<div class="input-group date" id="end-time">
+							<input type="text" class="form-control" />
+							<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+						</div>
+					</div>
+				</div>
+			</div>
 			<div id="word-cloud"></div>
 		</div>
 	</body>
