@@ -4,27 +4,10 @@ var WordCloud = WordCloud || (function(){
 	var wordsInCloud = [];
 	var maxWordCount = 0;
 	var fill = d3.scale.category20();
+	
 	var initialize = function(_statuses, _names){
 		statuses = _statuses;
-		$("#filter").click(function(){
-			var beforeTimeStamp = (new Date($("#before-time").data("DateTimePicker").getDate())).getTime()/1000;
-			activeDelegates.beforeTime = function(status){
-				return parseInt(status.created_time) < beforeTimeStamp;
-			};
-			var afterTimeStamp = (new Date($("#after-time").data("DateTimePicker").getDate())).getTime()/1000;
-			activeDelegates.afterTime = function(status){
-				return parseInt(status.created_time) > afterTimeStamp;
-			};
-			var postedByVal = $("#posted-by :selected").val();
-			if(postedByVal != "-1"){
-				activeDelegates.postedBy = function(status){ 
-					return status.actor_id == postedByVal;
-				};
-			}else{
-				activeDelegates.postedBy = function(){ return true; };
-			}
-			updateCloud();
-		});
+		$("#filter").click(filterClick);
 		$("#before-time").datetimepicker();
 		$("#after-time").datetimepicker();
 		$("#posted-by").append($("<option>", { value: "-1" }).text("Everyone"));
@@ -43,6 +26,26 @@ var WordCloud = WordCloud || (function(){
 		updateCloud();
 	};
 	
+	var filterClick = function(){
+		var beforeTimeStamp = (new Date($("#before-time").data("DateTimePicker").getDate())).getTime()/1000;
+		activeDelegates.beforeTime = function(status){
+			return parseInt(status.created_time) < beforeTimeStamp;
+		};
+		var afterTimeStamp = (new Date($("#after-time").data("DateTimePicker").getDate())).getTime()/1000;
+		activeDelegates.afterTime = function(status){
+			return parseInt(status.created_time) > afterTimeStamp;
+		};
+		var postedByVal = $("#posted-by :selected").val();
+		if(postedByVal != "-1"){
+			activeDelegates.postedBy = function(status){ 
+				return status.actor_id == postedByVal;
+			};
+		}else{
+			activeDelegates.postedBy = function(){ return true; };
+		}
+		updateCloud();	
+	};
+	
 	var updateCloud = function(){
 		var wordCounts = {};
 		var wordCountsArray = [];
@@ -55,7 +58,7 @@ var WordCloud = WordCloud || (function(){
 				}
 			}
 			if(passed){
-				var statusWords = statuses[i].message.match(/[a-z]{5,}/gim);
+				var statusWords = statuses[i].message.match(/[a-z]{5,}/gim);//words under 5 characters tend to be not very interesting ('the', 'it', 'what', etc)
 				for(var j in statusWords){
 					var word = statusWords[j].toUpperCase();
 					if(wordCounts[word] === undefined){
@@ -71,15 +74,15 @@ var WordCloud = WordCloud || (function(){
 			wordCountsArray.push({ text: word, size: wordCounts[word] });
 		}
 		wordsInCloud = wordCountsArray.sort(function(a,b){ return b.size - a.size; });
-		if(wordsInCloud.length > 250){ //it's not likely the word cloud will even be able to fit 250 words on the screen, but if its larger than this, cut it down to speed rendering up
+		if(wordsInCloud.length > 250){ //it's not likely the word cloud will even be able to fit 250 words on the screen, but if the list is larger than this, cut it down to speed rendering up
 		wordsInCloud = wordsInCloud.slice(0,250);
 		}
 		
 		if(wordsInCloud.length > 0){
 			maxWordCount = wordsInCloud[0].size;
-			d3.layout.cloud().size([1170,900]).words(wordsInCloud)
-				.rotate(function() { return (~~(Math.random() * 12) * 15) - 90; })
-				.fontSize(function(d) { return parseInt("" + (Math.sqrt(d.size)*100) / Math.sqrt(maxWordCount)) + 10; })
+			d3.layout.cloud().size([1140,900]).words(wordsInCloud)
+				.rotate(function() { return (~~(Math.random() * 12) * 15) - 90; }) //-90 degrees to 90 degrees in 15 degree steps
+				.fontSize(function(d) { return parseInt("" + (Math.sqrt(d.size)*100) / Math.sqrt(maxWordCount)) + 10; }) //sqrt should give us a wider distribution of font sizes
 				.font("Impact")
 				.on("end", drawCloud).start();
 		}else{
@@ -91,9 +94,9 @@ var WordCloud = WordCloud || (function(){
 	var drawCloud = function(words){
 		$("#content-container").empty();
 		d3.select("#content-container").append("svg")
-			.attr("width", 1170).attr("height", 900)
+			.attr("width", 1140).attr("height", 900)
 			.append("g")
-			.attr("transform", "translate(585,450)")
+			.attr("transform", "translate(570,450)")
 			.selectAll("text")
 			.data(words)
 			.enter().append("text")
