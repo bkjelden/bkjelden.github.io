@@ -66,7 +66,12 @@ var WordCloud = WordCloud || (function(){
 				return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
 			})
 			.text(function(d) { return d.text; });
+		$("#word-cloud-form").css("visibility", "visible");
 	};
+	
+	$("#filter").click(function(){
+		
+	});
 	
 	return {
 		setStatuses: setStatuses
