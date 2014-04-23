@@ -90,6 +90,7 @@ var WordCloud = WordCloud || (function(){
 	
 	var drawCloud = function(words){
 		$("#content-container").empty();
+		var fill = d3.scale.category20();
 		d3.select("#content-container").append("svg")
 			.attr("width", 1140).attr("height", 900)
 			.append("g")
@@ -99,7 +100,7 @@ var WordCloud = WordCloud || (function(){
 			.enter().append("text")
 			.style("font-size", function(d) { return d.size + "px"; })
 			.style("font-family", "Impact")
-			.style("fill", function(d, i) { return d3.scale.category20()(i); })
+			.style("fill", function(d, i) { return fill(i); })
 			.attr("text-anchor", "middle")
 			.attr("transform", function(d) {
 				return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
