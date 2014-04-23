@@ -4,7 +4,7 @@ var WordCloud = WordCloud || (function(){
 	var wordsInCloud = [];
 	var maxWordCount = 0;
 	var fill = d3.scale.category20();
-	var initialize = function(_statuses){
+	var initialize = function(_statuses, _names){
 		statuses = _statuses;
 		$("#filter").click(function(){
 			var beforeTimeStamp = (new Date($("#before-time").data("DateTimePicker").getDate())).getTime()/1000;
@@ -15,11 +15,23 @@ var WordCloud = WordCloud || (function(){
 			activeDelegates.afterTime = function(status){
 				return parseInt(status.created_time) > afterTimeStamp;
 			};
+			var postedByVal = $("#posted-by :selected").val();
+			if(postedByVal != "-1"){
+				activeDelegates.postedBy = function(status){ 
+					return status.actor_id == postedByVal;
+				};
+			}else{
+				activeDelegates.postedBy = function(){ return true; };
+			}
 			updateCloud();
 			setupCloud();
 		});
 		$("#before-time").datetimepicker();
 		$("#after-time").datetimepicker();
+		$("#posted-by").append("<option>", { value: "-1" }).text("Everyone");
+		for(var i in _names){
+			$("#posted-by").append("<option>", { value: _names[i].uid }).text(_names[i].name);	
+		}
 		$("#word-cloud-form").css("visibility", "visible");
 		
 		var beforeTime = $("#before-time").data("DateTimePicker");

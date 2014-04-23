@@ -73,8 +73,8 @@
 					}
 					var query = "SELECT name, uid FROM user WHERE uid IN ("+user_ids.join()+")";
 					FB.api({ method: 'fql.query', query: query }, function(resp){
-						names = resp;
-						WordCloud.initialize(statuses);
+						names = resp.sort(function(a,b){ return a.name.localeCompare(b.name); });;
+						WordCloud.initialize(statuses, names);
 					});
 				}
 			});
@@ -102,9 +102,7 @@
 					<div class="col-sm-3">
 						<div class="input-group">
 							<span class="input-group-addon">Posted by:</span>
-							<select class="form-control">
-								<option>Billy Kjelden</option>
-								<option>Rachael Kjelden</option>
+							<select class="form-control" id="posted-by">
 							</select>
 						</div>
 					</div>
