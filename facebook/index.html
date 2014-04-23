@@ -8,7 +8,7 @@
 		<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 		<script src="http://rawgit.com/jasondavies/d3-cloud/master/d3.layout.cloud.js"></script>
 		<script src="http://momentjs.com/downloads/moment.min.js"></script>
-		<script src="http://rawgit.com/Eonasdan/bootstrap-datetimepicker/blob/master/build/js/bootstrap-datetimepicker.min.js"></script>
+		<script src="http://rawgit.com/Eonasdan/bootstrap-datetimepicker/master/build/js/bootstrap-datetimepicker.min.js"></script>
 		<script src="wordcloud.js"></script>
 		<script type="text/javascript">
 			$(document).ready(function(){
@@ -69,7 +69,15 @@
 			<div class="row">
 				<div id="word-cloud-form" class="form-group">
 					<div class="col-sm-6">
-						<div class="input-group date" id="end-time">
+						<div class="input-group date" id="before-time">
+							<span class="input-group-addon">Before:</span>
+							<input type="text" class="form-control" />
+							<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="input-group date" id="after-time">
+							<span class="input-group-addon">After:</span>
 							<input type="text" class="form-control" />
 							<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 						</div>
