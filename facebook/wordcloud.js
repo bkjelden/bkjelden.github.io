@@ -4,8 +4,13 @@ var WordCloud = WordCloud || (function(){
 	var wordsInCloud = [];
 	var maxWordCount = 0;
 	var fill = d3.scale.category20();
-	var setStatuses = function(_statuses){
+	var initialize = function(_statuses){
 		statuses = _statuses;
+		$("#filter").click(function(){
+		
+		});
+		$("#before-time").datetimepicker();
+		$("#after-time").datetimepicker();
 		updateCloud();
 		setupCloud();
 	};
@@ -74,12 +79,6 @@ var WordCloud = WordCloud || (function(){
 		endTime.setMinDate(new Date((statuses[statuses.length - 1].created_time - 1)*1000));
 		endTime.setDate(new Date(statuses[statuses.length - 1].created_time*1000));
 	};
-	
-	$("#filter").click(function(){
-		
-	});
-	$("#before-time").datetimepicker();
-	$("#after-time").datetimepicker();
 	return {
 		setStatuses: setStatuses
 	}
