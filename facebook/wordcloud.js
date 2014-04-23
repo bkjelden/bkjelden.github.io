@@ -1,16 +1,35 @@
 var WordCloud = WordCloud || (function(){
 	var statuses = [];
-	var activeDelegates = [];
+	var activeDelegates = {};
 	var wordsInCloud = [];
 	var maxWordCount = 0;
 	var fill = d3.scale.category20();
 	var initialize = function(_statuses){
 		statuses = _statuses;
 		$("#filter").click(function(){
-		
+			var beforeTimeStamp = (new Date($("#before-time").data("DateTimePicker").getDate())).getTime()/1000
+			activeDelegates.beforeTime = function(status){
+				return status.created_time < beforeTimeStamp;
+			};
+			var afterTimeStamp = (new Date($("#after-time").data("DateTimePicker").getDate())).getTime()/1000
+			activeDelegates.afterTime = function(status){
+				return status.created_time > afterTimeStamp;
+			};
+			updateCloud();
+			setupCloud();
 		});
 		$("#before-time").datetimepicker();
 		$("#after-time").datetimepicker();
+		$("#word-cloud-form").css("visibility", "visible");
+		$("#content-container").empty();
+		
+		var beforeTime = $("#before-time").data("DateTimePicker");
+		beforeTime.setMaxDate(new Date((parseInt(statuses[0].created_time) + 1)*1000));
+		beforeTime.setDate(new Date(parseInt(statuses[0].created_time)*1000));
+		var endTime = $("#after-time").data("DateTimePicker");
+		endTime.setMinDate(new Date((parseInt(statuses[statuses.length - 1].created_time) - 1)*1000));
+		endTime.setDate(new Date(parseInt(statuses[statuses.length - 1].created_time)*1000));
+		
 		updateCloud();
 		setupCloud();
 	};
@@ -55,7 +74,6 @@ var WordCloud = WordCloud || (function(){
 	};
 	
 	var drawCloud = function(words){
-		$("#content-container").empty();
 		d3.select("#content-container").append("svg")
 			.attr("width", 1140).attr("height", 900)
 			.append("g")
@@ -71,13 +89,6 @@ var WordCloud = WordCloud || (function(){
 				return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
 			})
 			.text(function(d) { return d.text; });
-		$("#word-cloud-form").css("visibility", "visible");
-		var beforeTime = $("#before-time").data("DateTimePicker");
-		beforeTime.setMaxDate(new Date((parseInt(statuses[0].created_time) + 1)*1000));
-		beforeTime.setDate(new Date(parseInt(statuses[0].created_time)*1000));
-		var endTime = $("#after-time").data("DateTimePicker");
-		endTime.setMinDate(new Date((parseInt(statuses[statuses.length - 1].created_time) - 1)*1000));
-		endTime.setDate(new Date(parseInt(statuses[statuses.length - 1].created_time)*1000));
 	};
 	return {
 		initialize: initialize
