@@ -80,6 +80,6 @@ var WordCloud = WordCloud || (function(){
 		endTime.setDate(new Date(statuses[statuses.length - 1].created_time*1000));
 	};
 	return {
-		setStatuses: setStatuses
+		initialize: initialize
 	}
 })();
